@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-08-02T01:41:50.301Z</updated>
+  <updated>2018-08-02T14:27:11.805Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,15 +21,15 @@
     <link href="http://yoursite.com/2018/08/01/hello-world/"/>
     <id>http://yoursite.com/2018/08/01/hello-world/</id>
     <published>2018-08-01T12:23:53.033Z</published>
-    <updated>2018-08-02T01:41:50.301Z</updated>
+    <updated>2018-08-02T14:27:11.805Z</updated>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>欢迎来到YunLin的博客，本博客基于<a href="https://github.com/" title="Github" target="_blank" rel="noopener">Github</a>和<a href="https://hexo.io/zh-cn/" title="Hexo" target="_blank" rel="noopener">Hexo</a>搭建，使用<a href="https://github.com/iissnan/hexo-theme-next" title="NexT.Mist" target="_blank" rel="noopener">NexT.Mist</a>主题。在阿里云购买的域名，分别为<a href="http://yunlinos.com/" title="www.yunlinos.com" target="_blank" rel="noopener">www.yunlinos.com</a>和<a href="http://yunlinos.cn/" title="www.yunlinos.cn" target="_blank" rel="noopener">www.yunlinos.cn</a>。</p><p>在这里，坚决减少记录性内容，避免环境的简单搭建；多些源码的解读、架构的思考、底层的原理，确保内容高质量。</p><p>现阶段内容包括不限于：</p><ul><li>开源项目的源码解读，偏向于设计思想和优秀的代码实现</li><li>Android源码的实现，偏向于功能的原理性解读</li><li>深耕计算机网络、Java虚拟机方面</li></ul><p>当然，最重要的还是坚持，让更多的人得到帮助，也让自己的成长滴水成河。</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+        &lt;p&gt;欢迎来到YunLin的博客，本博客基于&lt;a href=&quot;https://github.com/&quot; title=&quot;Github&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Github&lt;/a&gt;和&lt;a href=&quot;https://hexo.io/zh-cn/
       
     
     </summary>
