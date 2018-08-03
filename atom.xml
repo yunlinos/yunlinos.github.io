@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="http://yunlinos.com/"/>
   <updated>2018-08-03T09:26:13.023Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>http://yunlinos.com/</id>
   
   <author>
     <name>YunLinOS</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Monkey源码解析</title>
-    <link href="http://yoursite.com/2018/08/03/Monkey%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
-    <id>http://yoursite.com/2018/08/03/Monkey源码解析/</id>
+    <link href="http://yunlinos.com/2018/08/03/Monkey%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+    <id>http://yunlinos.com/2018/08/03/Monkey源码解析/</id>
     <published>2018-08-03T06:57:41.000Z</published>
     <updated>2018-08-03T09:26:13.023Z</updated>
     
@@ -34,15 +34,15 @@
     
     </summary>
     
-      <category term="源码解析" scheme="http://yoursite.com/categories/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+      <category term="源码解析" scheme="http://yunlinos.com/categories/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
     
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2018/08/01/hello-world/"/>
-    <id>http://yoursite.com/2018/08/01/hello-world/</id>
+    <link href="http://yunlinos.com/2018/08/01/hello-world/"/>
+    <id>http://yunlinos.com/2018/08/01/hello-world/</id>
     <published>2018-08-01T12:23:53.033Z</published>
     <updated>2018-08-03T02:44:55.315Z</updated>
     
@@ -57,7 +57,7 @@
     
     </summary>
     
-      <category term="Thinking" scheme="http://yoursite.com/categories/Thinking/"/>
+      <category term="Thinking" scheme="http://yunlinos.com/categories/Thinking/"/>
     
     
   </entry>
