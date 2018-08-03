@@ -88,13 +88,13 @@
 <meta property="og:site_name" content="YunLinOS Notes">
 <meta property="og:description" content="前言前段时间在梳理公司的自动化测试脚本时，发现Monkey是个挺有意思的工具，它向系统发送伪随机的用户事件流(如按键输入、触摸屏输入、手势输入等)，实现对正在开发的应用程序进行压力测试，这个倒很像一个梗π里面藏着一部莎士比亚。比较好奇它的实现原理，于是就有了研究源码的想法，说干就干，Read the Fucking Source Code。 源码先将源码从系统中导出，我手头的AOSP是Androi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yunlinos.com/archives/Monkey源码解析/Monkey结构图.png">
-<meta property="og:image" content="http://yunlinos.com/archives/Monkey源码解析/自动化测试架构图.png">
-<meta property="og:updated_time" content="2018-08-03T14:27:17.186Z">
+<meta property="og:image" content="http://yunlinos.com/archives/ff7c0d4a/Monkey结构图.png">
+<meta property="og:image" content="http://yunlinos.com/archives/ff7c0d4a/自动化测试架构图.png">
+<meta property="og:updated_time" content="2018-08-03T14:35:55.871Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Monkey源码解析">
 <meta name="twitter:description" content="前言前段时间在梳理公司的自动化测试脚本时，发现Monkey是个挺有意思的工具，它向系统发送伪随机的用户事件流(如按键输入、触摸屏输入、手势输入等)，实现对正在开发的应用程序进行压力测试，这个倒很像一个梗π里面藏着一部莎士比亚。比较好奇它的实现原理，于是就有了研究源码的想法，说干就干，Read the Fucking Source Code。 源码先将源码从系统中导出，我手头的AOSP是Androi">
-<meta name="twitter:image" content="http://yunlinos.com/archives/Monkey源码解析/Monkey结构图.png">
+<meta name="twitter:image" content="http://yunlinos.com/archives/ff7c0d4a/Monkey结构图.png">
 
 
 
@@ -390,8 +390,8 @@
 <li><p>以上，基本就完成了整个事件注入的流程</p>
 </li>
 </ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Monkey的软件架构图：<br><img src="/archives/Monkey源码解析/Monkey结构图.png" alt="你想输入的替代文字"></p>
-<p>Monkey的工作原理图：<br><img src="/archives/Monkey源码解析/自动化测试架构图.png" alt="Monkey的工作原理图"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Monkey的软件架构图：<br><img src="/archives/ff7c0d4a/Monkey结构图.png" alt="你想输入的替代文字"></p>
+<p>Monkey的工作原理图：<br><img src="/archives/ff7c0d4a/自动化测试架构图.png" alt="Monkey的工作原理图"></p>
 <p>再次总结下其工作流程如下：</p>
 <ol>
 <li>由<code>system/bin/monkey</code>启动Monkey进程</li>
