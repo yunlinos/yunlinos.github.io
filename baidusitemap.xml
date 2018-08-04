@@ -3,18 +3,21 @@
 
 
     
+    
   <url>
     <loc>http://yunlinos.com/archives/ff7c0d4a.html</loc>
-    <lastmod>2018-08-03T14:35:55.871Z</lastmod>
+    <lastmod>2018-08-04T01:09:12.876Z</lastmod>
     <data>
         <display>
         <title>Monkey源码解析</title>
         <pubTime>2018-08-03T06:57:41.000Z</pubTime>
         
+        <tag>源码</tag>
+         
          
            
              
-              <breadCrumb title="源码解析" url="http://yunlinos.com/categories/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+              <breadCrumb title="Android系统源码" url="http://yunlinos.com/categories/Android%E7%B3%BB%E7%BB%9F%E6%BA%90%E7%A0%81/"/>
           
         </display>
     </data>
@@ -23,16 +26,18 @@
     
   <url>
     <loc>http://yunlinos.com/archives/4a17b156.html</loc>
-    <lastmod>2018-08-03T14:27:17.187Z</lastmod>
+    <lastmod>2018-08-04T01:09:04.963Z</lastmod>
     <data>
         <display>
         <title>Hello World</title>
         <pubTime>2018-08-01T12:23:53.033Z</pubTime>
         
+        <tag>总结</tag>
+         
          
            
              
-              <breadCrumb title="Thinking" url="http://yunlinos.com/categories/Thinking/"/>
+              <breadCrumb title="个人思考总结" url="http://yunlinos.com/categories/%E4%B8%AA%E4%BA%BA%E6%80%9D%E8%80%83%E6%80%BB%E7%BB%93/"/>
           
         </display>
     </data>
