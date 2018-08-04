@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Monkey,自动化测试," />
+  <meta name="keywords" content="Monkey,自动化测试,Android," />
 
 
 
@@ -82,18 +82,18 @@
 
 
 <meta name="description" content="前言前段时间在梳理公司的自动化测试脚本时，发现Monkey是个挺有意思的工具，它向系统发送伪随机的用户事件流(如按键输入、触摸屏输入、手势输入等)，实现对正在开发的应用程序进行压力测试，这个倒很像一个梗π里面藏着一部莎士比亚。比较好奇它的实现原理，于是就有了研究源码的想法，说干就干，Read the Fucking Source Code。 源码先将源码从系统中导出，我手头的AOSP是Androi">
-<meta name="keywords" content="Monkey,自动化测试">
+<meta name="keywords" content="Monkey,自动化测试,Android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Monkey源码解析">
+<meta property="og:title" content="Android Monkey源码解析">
 <meta property="og:url" content="http://yunlinos.com/archives/ff7c0d4a.html">
 <meta property="og:site_name" content="YunLinOS Notes">
 <meta property="og:description" content="前言前段时间在梳理公司的自动化测试脚本时，发现Monkey是个挺有意思的工具，它向系统发送伪随机的用户事件流(如按键输入、触摸屏输入、手势输入等)，实现对正在开发的应用程序进行压力测试，这个倒很像一个梗π里面藏着一部莎士比亚。比较好奇它的实现原理，于是就有了研究源码的想法，说干就干，Read the Fucking Source Code。 源码先将源码从系统中导出，我手头的AOSP是Androi">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yunlinos.com/archives/ff7c0d4a/Monkey结构图.png">
 <meta property="og:image" content="http://yunlinos.com/archives/ff7c0d4a/自动化测试架构图.png">
-<meta property="og:updated_time" content="2018-08-04T01:50:25.260Z">
+<meta property="og:updated_time" content="2018-08-04T01:59:29.797Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Monkey源码解析">
+<meta name="twitter:title" content="Android Monkey源码解析">
 <meta name="twitter:description" content="前言前段时间在梳理公司的自动化测试脚本时，发现Monkey是个挺有意思的工具，它向系统发送伪随机的用户事件流(如按键输入、触摸屏输入、手势输入等)，实现对正在开发的应用程序进行压力测试，这个倒很像一个梗π里面藏着一部莎士比亚。比较好奇它的实现原理，于是就有了研究源码的想法，说干就干，Read the Fucking Source Code。 源码先将源码从系统中导出，我手头的AOSP是Androi">
 <meta name="twitter:image" content="http://yunlinos.com/archives/ff7c0d4a/Monkey结构图.png">
 
@@ -131,7 +131,7 @@
 
 
 
-  <title>Monkey源码解析 | YunLinOS Notes</title>
+  <title>Android Monkey源码解析 | YunLinOS Notes</title>
   
 
 
@@ -285,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Monkey源码解析</h1>
+          <h1 class="post-title" itemprop="name headline">Android Monkey源码解析</h1>
         
 
         <div class="post-meta">
@@ -432,7 +432,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yunlinos.com/archives/ff7c0d4a.html" title="Monkey源码解析">http://yunlinos.com/archives/ff7c0d4a.html</a>
+    <a href="http://yunlinos.com/archives/ff7c0d4a.html" title="Android Monkey源码解析">http://yunlinos.com/archives/ff7c0d4a.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -450,6 +450,8 @@
             <a href="/tags/Monkey/" rel="tag"># Monkey</a>
           
             <a href="/tags/自动化测试/" rel="tag"># 自动化测试</a>
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
           
         </div>
       
@@ -573,7 +575,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
