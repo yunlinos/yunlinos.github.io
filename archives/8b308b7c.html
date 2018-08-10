@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="YunLinOS Notes">
 <meta property="og:description" content="背景在使用monkey进行压力测试时，我们发现，随机的触摸事件中大约有95%的无效事件，达到深层页面的概率极低，每晚压测的实际有效时间其实只有半小时，且缺少相互依赖的路径，完全无法满足压力测试的需求。而存粹依靠人工测试则效率过低，所以我们会想，能否有一种方式，可以将我们的测试过程录制下来，然后在更多的机器上面循环回放，还能对操作进行加速和减速，并且实时跟踪崩溃数据和性能数据，起到效率更高的压测效果">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-10T13:27:38.554Z">
+<meta property="og:updated_time" content="2018-08-10T13:40:36.238Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android触摸事件模拟">
 <meta name="twitter:description" content="背景在使用monkey进行压力测试时，我们发现，随机的触摸事件中大约有95%的无效事件，达到深层页面的概率极低，每晚压测的实际有效时间其实只有半小时，且缺少相互依赖的路径，完全无法满足压力测试的需求。而存粹依靠人工测试则效率过低，所以我们会想，能否有一种方式，可以将我们的测试过程录制下来，然后在更多的机器上面循环回放，还能对操作进行加速和减速，并且实时跟踪崩溃数据和性能数据，起到效率更高的压测效果">
@@ -354,7 +354,7 @@
       
 
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在使用monkey进行压力测试时，我们发现，随机的触摸事件中大约有95%的无效事件，达到深层页面的概率极低，每晚压测的实际有效时间其实只有半小时，且缺少相互依赖的路径，完全无法满足压力测试的需求。而存粹依靠人工测试则效率过低，所以我们会想，能否有一种方式，可以将我们的测试过程录制下来，然后在更多的机器上面循环回放，还能对操作进行加速和减速，并且实时跟踪崩溃数据和性能数据，起到效率更高的压测效果，即<code>Write once, run anywhere</code>。在知道<a href="http://yunlinos.com/archives/9f4ea589.html" title="触摸事件原理">触摸事件原理</a>后，我们就开始做这件很Cool的事情，而本文就介绍了整个预研和摸索的过程。</p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在使用monkey进行压力测试时，我们发现，随机的触摸事件中大约有95%的无效事件，达到深层页面的概率极低，每晚压测的实际有效时间其实只有半小时，且缺少相互依赖的路径，完全无法满足压力测试的需求。而存粹依靠人工测试则效率过低，所以我们会想，能否有一种方式，可以将我们的测试过程录制下来，然后在更多的机器上面循环回放，还能对操作进行加速和减速，并且实时跟踪崩溃数据和性能数据，起到效率更高的压测效果，即<code>Copy once, paste anywhere</code>。在知道<a href="http://yunlinos.com/archives/9f4ea589.html" title="触摸事件原理">触摸事件原理</a>后，我们就开始做这件很Cool的事情，而本文就介绍了整个预研和摸索的过程。</p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们现在先梳理下我们需要实现的功能，即过程大概如下：</p>
 <ol>
 <li>将触摸事件记录在文本中</li>
