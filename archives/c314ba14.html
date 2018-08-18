@@ -81,22 +81,22 @@
 
 
 
-<meta name="description" content="前言最近打算使用Python实现自动抓取Confluence页面，本来以为模拟登陆、页面抓取、数据分析能够一气呵成，可是事实并没有那么简单，直接在模拟登录这块NG了。 因为公司采用的并非是单系统登录机制，而是采用单点登录机制（SSO），所以在模拟登陆获取cookies时并没有普通登录那么简单，各种权限认证、页面跳转导致整个过程比较曲折。不过，在仔细研究了单点登录的原理以及抓包后，终于解决了该问题，">
+<meta name="description" content="前言最近打算使用Python实现自动抓取Confluence页面，本来以为模拟登陆、页面抓取、数据分析能够一气呵成，可是事实并没有那么简单，直接在模拟登录这块NG了。 因为公司采用的并非是单系统登录机制，而是采用多系统单点登录机制（SSO），所以在模拟登陆获取cookies时遇到各种权限认证、页面跳转，导致整个过程比较曲折。不过，在仔细研究了单点登录的原理以及抓包后，终于解决了该问题，下面就是对这">
 <meta name="keywords" content="SSO">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python实现单点登录(SSO)">
 <meta property="og:url" content="http://yunlinos.com/archives/c314ba14.html">
 <meta property="og:site_name" content="YunLinOS Notes">
-<meta property="og:description" content="前言最近打算使用Python实现自动抓取Confluence页面，本来以为模拟登陆、页面抓取、数据分析能够一气呵成，可是事实并没有那么简单，直接在模拟登录这块NG了。 因为公司采用的并非是单系统登录机制，而是采用单点登录机制（SSO），所以在模拟登陆获取cookies时并没有普通登录那么简单，各种权限认证、页面跳转导致整个过程比较曲折。不过，在仔细研究了单点登录的原理以及抓包后，终于解决了该问题，">
+<meta property="og:description" content="前言最近打算使用Python实现自动抓取Confluence页面，本来以为模拟登陆、页面抓取、数据分析能够一气呵成，可是事实并没有那么简单，直接在模拟登录这块NG了。 因为公司采用的并非是单系统登录机制，而是采用多系统单点登录机制（SSO），所以在模拟登陆获取cookies时遇到各种权限认证、页面跳转，导致整个过程比较曲折。不过，在仔细研究了单点登录的原理以及抓包后，终于解决了该问题，下面就是对这">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yunlinos.com/archives/c314ba14/单系统登录.png">
 <meta property="og:image" content="http://yunlinos.com/archives/c314ba14/登录界面.png">
 <meta property="og:image" content="http://yunlinos.com/archives/c314ba14/登录请求界面.png">
 <meta property="og:image" content="http://yunlinos.com/archives/c314ba14/网页Execution信息.png">
-<meta property="og:updated_time" content="2018-08-18T07:45:55.093Z">
+<meta property="og:updated_time" content="2018-08-18T07:56:51.853Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python实现单点登录(SSO)">
-<meta name="twitter:description" content="前言最近打算使用Python实现自动抓取Confluence页面，本来以为模拟登陆、页面抓取、数据分析能够一气呵成，可是事实并没有那么简单，直接在模拟登录这块NG了。 因为公司采用的并非是单系统登录机制，而是采用单点登录机制（SSO），所以在模拟登陆获取cookies时并没有普通登录那么简单，各种权限认证、页面跳转导致整个过程比较曲折。不过，在仔细研究了单点登录的原理以及抓包后，终于解决了该问题，">
+<meta name="twitter:description" content="前言最近打算使用Python实现自动抓取Confluence页面，本来以为模拟登陆、页面抓取、数据分析能够一气呵成，可是事实并没有那么简单，直接在模拟登录这块NG了。 因为公司采用的并非是单系统登录机制，而是采用多系统单点登录机制（SSO），所以在模拟登陆获取cookies时遇到各种权限认证、页面跳转，导致整个过程比较曲折。不过，在仔细研究了单点登录的原理以及抓包后，终于解决了该问题，下面就是对这">
 <meta name="twitter:image" content="http://yunlinos.com/archives/c314ba14/单系统登录.png">
 
 
@@ -360,7 +360,7 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近打算使用Python实现自动抓取<a href="https://www.atlassian.com/software/confluence" title="Confluence" target="_blank" rel="noopener">Confluence</a>页面，本来以为模拟登陆、页面抓取、数据分析能够一气呵成，可是事实并没有那么简单，直接在模拟登录这块NG了。</p>
-<p>因为公司采用的并非是单系统登录机制，而是采用单点登录机制（SSO），所以在模拟登陆获取<code>cookies</code>时并没有普通登录那么简单，各种权限认证、页面跳转导致整个过程比较曲折。不过，在仔细研究了单点登录的原理以及抓包后，终于解决了该问题，下面就是对这块内容的整理，主要分为两块：</p>
+<p>因为公司采用的并非是单系统登录机制，而是采用多系统单点登录机制（SSO），所以在模拟登陆获取<code>cookies</code>时遇到各种权限认证、页面跳转，导致整个过程比较曲折。不过，在仔细研究了单点登录的原理以及抓包后，终于解决了该问题，下面就是对这块内容的整理，主要分为两块：</p>
 <ol>
 <li>单系统登录机制和多系统单点登录机制(SSO)的区别</li>
 <li>Python实现单点登录的过程</li>
@@ -370,10 +370,10 @@
 <p>如果用户需要通过浏览器访问服务器的敏感资源，那么就必须要相应的授权行为，即服务器需要鉴别浏览器的行为，只响应合法请求，忽略非法请求。但是要鉴别浏览器的行为，就必须要清楚浏览器的请求状态，能够识别本次请求的用户是谁，该用户的行为是否经过授权等信息。所以就出现了会话机制，即<a href="https://zhuanlan.zhihu.com/p/21275207" title="Cookie与Session机制" target="_blank" rel="noopener">Cookie与Session机制</a>。</p>
 <p>Cookie通过在浏览器（客户端）记录信息确定用户身份，Session通过在服务器端记录信息确定用户身份。浏览器在每次发送http请求时都带上Cookie，而服务器端则根据该信息来判断当前的连接状态，这样就能知道会话的上下文信息了。因此，有了Cookie，服务端就能知道客户端的状态；而没有了Cookie，它连金鱼都不如。<br>有了会话机制，服务端就能更好的做好授权行为，即实现服务端的登录。</p>
 <h3 id="单系统登录机制"><a href="#单系统登录机制" class="headerlink" title="单系统登录机制"></a>单系统登录机制</h3><p>单系统登录机制的实现很简单，就是客户端在第一次请求服务器时带上账号和密码，服务器在拿到这些信息后进行校验，如果校验成功则表明是合法的身份。这时候服务器会返回客户一个身份信息，即Cookie，客户端浏览器会把Cookie保存起来。当浏览器再请求该网站时，浏览器把请求的网址连同该Cookie一同提交给服务器。服务器检查该Cookie，以此来辨认用户状态与权限。其过程如下：<br><img src="/archives/c314ba14/单系统登录.png" alt="单系统登录"></p>
-<h3 id="多系统单点登录机制-SSO"><a href="#多系统单点登录机制-SSO" class="headerlink" title="多系统单点登录机制(SSO)"></a>多系统单点登录机制(SSO)</h3><p>随着计算机网络的发展，很多公司内部不只是单系统，而是发展成为了由多系统组成的应用群，面多各种系统，如果还是使用之前的登录机制，那么就每套系统的使用都需要重新登录、注销等等，这将会极大影响日常的工作。</p>
+<h3 id="多系统单点登录机制-SSO"><a href="#多系统单点登录机制-SSO" class="headerlink" title="多系统单点登录机制(SSO)"></a>多系统单点登录机制(SSO)</h3><p>随着计算机网络的发展，很多公司内部不只是单系统，而是发展成为了由多系统组成的应用群，面对各种系统，如果还是使用之前的登录机制，那么每套系统的使用都需要重新登录、注销等等，这将会极大影响日常的工作。</p>
 <p>这时候就会出现了单点登录机制，即SSO(Single Sign On)。在多系统应用群中，只需要登录其中一个系统，即可在其他所有系统中得到授权而无需再次登录。</p>
 <p>sso需要一个独立的认证中心，只有认证中心能接受用户的用户名密码等安全信息，其他系统不提供登录入口，只接受认证中心的间接授权。间接授权通过令牌实现，sso认证中心验证用户的用户名密码没问题，创建授权令牌，在接下来的跳转过程中，授权令牌作为参数发送给各个子系统，子系统拿到令牌，即得到了授权，可以借此创建局部会话，局部会话登录方式与单系统的登录方式相同。</p>
-<h2 id="模拟SSO登录"><a href="#模拟SSO登录" class="headerlink" title="模拟SSO登录"></a>模拟SSO登录</h2><p>在明白单点登录的原理后，我们就很容易知道后面需要的突破的方向了。而且只要拿到系统登录页面的cookie后，就能畅通无阻的访问内网的所有系统。</p>
+<h2 id="模拟SSO登录"><a href="#模拟SSO登录" class="headerlink" title="模拟SSO登录"></a>模拟SSO登录</h2><p>在明白单点登录的原理后，我们就很容易知道后面需要的突破方向。而且只要拿到系统登录页面的cookie后，就能畅通无阻的访问内网的所有其他系统。</p>
 <h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><ul>
 <li>Chrome 使用显示网页源代码和检查功能，来跟踪页面的请求过程</li>
 <li>python 3.6</li>
