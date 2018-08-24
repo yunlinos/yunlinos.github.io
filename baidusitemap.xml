@@ -4,6 +4,24 @@
 
     
   <url>
+    <loc>http://yunlinos.com/archives/11ada9d0.html</loc>
+    <lastmod>2018-08-23T01:12:22.404Z</lastmod>
+    <data>
+        <display>
+        <title>EventBus源码解析</title>
+        <pubTime>2018-08-23T00:13:59.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="开源项目源码" url="http://yunlinos.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%BA%90%E7%A0%81/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yunlinos.com/archives/c314ba14.html</loc>
     <lastmod>2018-08-18T07:56:51.853Z</lastmod>
     <data>
@@ -31,9 +49,9 @@
         <title>Android触摸事件模拟</title>
         <pubTime>2018-08-10T01:40:36.000Z</pubTime>
         
-        <tag>触摸事件</tag>
-         
         <tag>自动化测试</tag>
+         
+        <tag>触摸事件</tag>
          
          
            
@@ -99,9 +117,9 @@
         
         <tag>Android</tag>
          
-        <tag>自动化测试</tag>
-         
         <tag>Monkey</tag>
+         
+        <tag>自动化测试</tag>
          
          
            
