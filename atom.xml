@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yunlinos.com/"/>
-  <updated>2018-08-23T01:12:22.404Z</updated>
+  <updated>2018-09-02T06:45:04.919Z</updated>
   <id>http://yunlinos.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android IPC库EventFlyer</title>
+    <link href="http://yunlinos.com/archives/46aebf49.html"/>
+    <id>http://yunlinos.com/archives/46aebf49.html</id>
+    <published>2018-09-02T06:13:41.000Z</published>
+    <updated>2018-09-02T06:45:04.919Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为使得跨进程通信更加高效和方便，且实现在系统内单播和广播的功能，参照伟大的EventBus，实现了这款跨进程通信库。</p><p>项目地址：<a href="https://github.com/yunlinos/EventFlyer" title="EventFlyer" target="_blank" rel="noopener">https://github.com/yunlinos/EventFlyer</a></p><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>EventFlyer 是一款Android上的IPC (进程间通信) 库，使用起来和<a href="https://github.com/greenrobot/EventBus" title="EventBus" target="_blank" rel="noopener">EventBus</a>一样方便，其架构设计和代码实现来源于EventBus项目。<br><img src="/archives/46aebf49/EventFlyer.png" alt="EventFlyer"></p><h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul><li>简化应用程序之间的通信</li><li>避免生命周期的问题</li><li>支持线程切换</li></ul><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>在项目根目录的<code>build.gradle</code>中添加<code>jcenter()</code>仓库：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>在应用的<code>build.gradle</code>中添加依赖：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation <span class="string">'com.yunlinos.library:eventflyer:1.0.0'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol><li><p>初始化负责转发消息的服务，该服务应该尽可能长时间存活。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RemoteServer</span> <span class="keyword">extends</span> <span class="title">FlyerService</span> </span>&#123;<span class="comment">/* Do something */</span>&#125;</span><br></pre></td></tr></table></figure></li><li><p>像项目<code>eventmodel</code>中一样定义事件：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OnControlEvent</span> </span>&#123;<span class="comment">/* Do something */</span>&#125;</span><br></pre></td></tr></table></figure></li><li><p>在需要监听事件的应用中，初始化<code>Application</code>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate();</span><br><span class="line">    EventFlyer.getDefault().init(<span class="keyword">new</span> FlyerConfiguration.Builder()</span><br><span class="line">            .applicationContext(<span class="keyword">this</span>)</span><br><span class="line">            .remoteServicePkgName(<span class="string">"com.yunlinos.eventflyerserver"</span>)</span><br><span class="line">            .remoteServiceClassName(<span class="string">"com.yunlinos.eventflyerserver.RemoteServer"</span>)</span><br><span class="line">            .build());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>准备订阅，声明和注释订阅方法：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RemoteSubscribe</span>(threadMode = ThreadMode.MAIN)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEventGet</span><span class="params">(OnControlEvent onControlEvent)</span> </span>&#123;<span class="comment">/* Do something */</span>&#125;</span><br></pre></td></tr></table></figure><p><code>Bind</code>、<code>unbind</code>、<code>register</code>、<code>unregister</code>订阅者。 例如在Android上，activity和fragments通常会根据生命周期来注册：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate();</span><br><span class="line">    EventFlyer.getDefault().bindRemoteServer();</span><br><span class="line">    EventFlyer.getDefault().register(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onDestroy();</span><br><span class="line">    EventFlyer.getDefault().unregister(<span class="keyword">this</span>);</span><br><span class="line">    EventFlyer.getDefault().unBindRemoteServer();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>在发布事件的其他应用中，同样初始化<code>Application</code>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate();</span><br><span class="line">    EventFlyer.getDefault().init(<span class="keyword">new</span> FlyerConfiguration.Builder()</span><br><span class="line">            .applicationContext(<span class="keyword">this</span>)</span><br><span class="line">            .remoteServicePkgName(<span class="string">"com.yunlinos.eventflyerserver"</span>)</span><br><span class="line">            .remoteServiceClassName(<span class="string">"com.yunlinos.eventflyerserver.RemoteServer"</span>)</span><br><span class="line">            .build());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>发布事件：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onResume</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onResume();</span><br><span class="line">    EventFlyer.getDefault().bindRemoteServer();</span><br><span class="line">    EventFlyer.getDefault().post(<span class="keyword">new</span> OnControlEvent(<span class="string">"RemoteEvent"</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onPause();</span><br><span class="line">    EventFlyer.getDefault().unBindRemoteServer();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ol><h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><pre><code>Copyright 2018 yunlinos &lt;yunlinyeos@gmail.com&gt;Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);you may not use this file except in compliance with the License.You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0Unless required by applicable law or agreed to in writing, softwaredistributed under the License is distributed on an &quot;AS IS&quot; BASIS,WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.See the License for the specific language governing permissions andlimitations under the License.</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;为使得跨进程通信更加高效和方便，且实现在系统内单播和广播的功能，参照伟大的EventBus，实现了这款跨进程通信库。&lt;/p&gt;
+&lt;p&gt;项目地址
+      
+    
+    </summary>
+    
+      <category term="开源项目源码" scheme="http://yunlinos.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%BA%90%E7%A0%81/"/>
+    
+    
+      <category term="Android" scheme="http://yunlinos.com/tags/Android/"/>
+    
+      <category term="IPC" scheme="http://yunlinos.com/tags/IPC/"/>
+    
+  </entry>
   
   <entry>
     <title>EventBus源码解析</title>
@@ -85,9 +113,9 @@
       <category term="Android系统源码" scheme="http://yunlinos.com/categories/Android%E7%B3%BB%E7%BB%9F%E6%BA%90%E7%A0%81/"/>
     
     
-      <category term="自动化测试" scheme="http://yunlinos.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/"/>
-    
       <category term="触摸事件" scheme="http://yunlinos.com/tags/%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6/"/>
+    
+      <category term="自动化测试" scheme="http://yunlinos.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
@@ -168,9 +196,9 @@
     
       <category term="Android" scheme="http://yunlinos.com/tags/Android/"/>
     
-      <category term="Monkey" scheme="http://yunlinos.com/tags/Monkey/"/>
-    
       <category term="自动化测试" scheme="http://yunlinos.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="Monkey" scheme="http://yunlinos.com/tags/Monkey/"/>
     
   </entry>
   
