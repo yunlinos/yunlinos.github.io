@@ -4,6 +4,156 @@
 
     
   <url>
+    <loc>http://yunlinos.com/archives/46aebf49.html</loc>
+    <lastmod>2018-09-06T12:39:50.396Z</lastmod>
+    <data>
+        <display>
+        <title>Android IPC库EventFlyer</title>
+        <pubTime>2018-09-02T06:13:41.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>IPC</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android源码解析" url="http://yunlinos.com/categories/Android%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yunlinos.com/archives/8b308b7c.html</loc>
+    <lastmod>2018-09-06T12:39:40.982Z</lastmod>
+    <data>
+        <display>
+        <title>Android触摸事件模拟</title>
+        <pubTime>2018-08-10T01:40:36.000Z</pubTime>
+        
+        <tag>触摸事件</tag>
+         
+        <tag>自动化测试</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android源码解析" url="http://yunlinos.com/categories/Android%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yunlinos.com/archives/9f4ea589.html</loc>
+    <lastmod>2018-09-06T12:39:35.638Z</lastmod>
+    <data>
+        <display>
+        <title>Android触摸事件原理</title>
+        <pubTime>2018-08-04T02:40:02.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>触摸事件</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android源码解析" url="http://yunlinos.com/categories/Android%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yunlinos.com/archives/feabfdd.html</loc>
+    <lastmod>2018-09-06T12:39:29.634Z</lastmod>
+    <data>
+        <display>
+        <title>Android触摸事件分发--从InputManager到Window</title>
+        <pubTime>2018-08-05T07:06:56.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>触摸事件</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android源码解析" url="http://yunlinos.com/categories/Android%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yunlinos.com/archives/11ada9d0.html</loc>
+    <lastmod>2018-09-06T12:39:23.627Z</lastmod>
+    <data>
+        <display>
+        <title>EventBus源码解析</title>
+        <pubTime>2018-08-23T00:13:59.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Android源码解析" url="http://yunlinos.com/categories/Android%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yunlinos.com/archives/ff7c0d4a.html</loc>
+    <lastmod>2018-09-06T12:39:00.007Z</lastmod>
+    <data>
+        <display>
+        <title>Android Monkey源码解析</title>
+        <pubTime>2018-08-03T06:57:41.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>自动化测试</tag>
+         
+        <tag>Monkey</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android源码解析" url="http://yunlinos.com/categories/Android%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yunlinos.com/archives/c314ba14.html</loc>
+    <lastmod>2018-09-06T12:38:48.462Z</lastmod>
+    <data>
+        <display>
+        <title>Python实现单点登录(SSO)</title>
+        <pubTime>2018-08-18T07:44:27.000Z</pubTime>
+        
+        <tag>Python</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python实践" url="http://yunlinos.com/categories/Python%E5%AE%9E%E8%B7%B5/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yunlinos.com/archives/f53379a7.html</loc>
     <lastmod>2018-09-05T00:31:07.352Z</lastmod>
     <data>
@@ -19,156 +169,6 @@
            
              
               <breadCrumb title="Java基础理论" url="http://yunlinos.com/categories/Java%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yunlinos.com/archives/46aebf49.html</loc>
-    <lastmod>2018-09-02T06:45:04.919Z</lastmod>
-    <data>
-        <display>
-        <title>Android IPC库EventFlyer</title>
-        <pubTime>2018-09-02T06:13:41.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>IPC</tag>
-         
-         
-           
-             
-              <breadCrumb title="开源项目源码" url="http://yunlinos.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%BA%90%E7%A0%81/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yunlinos.com/archives/11ada9d0.html</loc>
-    <lastmod>2018-08-23T01:12:22.404Z</lastmod>
-    <data>
-        <display>
-        <title>EventBus源码解析</title>
-        <pubTime>2018-08-23T00:13:59.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="开源项目源码" url="http://yunlinos.com/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E6%BA%90%E7%A0%81/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yunlinos.com/archives/c314ba14.html</loc>
-    <lastmod>2018-08-18T07:56:51.853Z</lastmod>
-    <data>
-        <display>
-        <title>Python实现单点登录(SSO)</title>
-        <pubTime>2018-08-18T07:44:27.000Z</pubTime>
-        
-        <tag>Python</tag>
-         
-         
-           
-             
-              <breadCrumb title="日常问题处理" url="http://yunlinos.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yunlinos.com/archives/8b308b7c.html</loc>
-    <lastmod>2018-08-10T13:40:36.238Z</lastmod>
-    <data>
-        <display>
-        <title>Android触摸事件模拟</title>
-        <pubTime>2018-08-10T01:40:36.000Z</pubTime>
-        
-        <tag>触摸事件</tag>
-         
-        <tag>自动化测试</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android系统源码" url="http://yunlinos.com/categories/Android%E7%B3%BB%E7%BB%9F%E6%BA%90%E7%A0%81/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yunlinos.com/archives/feabfdd.html</loc>
-    <lastmod>2018-08-06T00:01:35.196Z</lastmod>
-    <data>
-        <display>
-        <title>Android触摸事件分发--从InputManager到Window</title>
-        <pubTime>2018-08-05T07:06:56.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>触摸事件</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android系统源码" url="http://yunlinos.com/categories/Android%E7%B3%BB%E7%BB%9F%E6%BA%90%E7%A0%81/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yunlinos.com/archives/9f4ea589.html</loc>
-    <lastmod>2018-08-05T02:22:29.251Z</lastmod>
-    <data>
-        <display>
-        <title>Android触摸事件原理</title>
-        <pubTime>2018-08-04T02:40:02.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>触摸事件</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android系统源码" url="http://yunlinos.com/categories/Android%E7%B3%BB%E7%BB%9F%E6%BA%90%E7%A0%81/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yunlinos.com/archives/ff7c0d4a.html</loc>
-    <lastmod>2018-08-04T01:59:29.797Z</lastmod>
-    <data>
-        <display>
-        <title>Android Monkey源码解析</title>
-        <pubTime>2018-08-03T06:57:41.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>自动化测试</tag>
-         
-        <tag>Monkey</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android系统源码" url="http://yunlinos.com/categories/Android%E7%B3%BB%E7%BB%9F%E6%BA%90%E7%A0%81/"/>
           
         </display>
     </data>
