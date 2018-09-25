@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Activity启动流程" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="YunLinOS Notes" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言本文是Activity Hook系列文章的上篇。在对Activity启动过程进行实际Hook前，我们应该对启动流程了如指掌，这样才能找到最佳的Hook点。而在这篇文章中，我们将会跟随源码的步伐，一步步看清楚Activity的启动流程。 但是，整个Activity的启动流程异常复杂，包括对Launch mode的判断、对Flag的处理、对生命周期的管理，如果我们过于深究细节，将会在代码中迷失自己">
+<meta name="keywords" content="Activity启动流程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Activity Hook之启动流程">
+<meta property="og:url" content="http://yunlinos.com/archives/12d6dd90.html">
+<meta property="og:site_name" content="YunLinOS Notes">
+<meta property="og:description" content="前言本文是Activity Hook系列文章的上篇。在对Activity启动过程进行实际Hook前，我们应该对启动流程了如指掌，这样才能找到最佳的Hook点。而在这篇文章中，我们将会跟随源码的步伐，一步步看清楚Activity的启动流程。 但是，整个Activity的启动流程异常复杂，包括对Launch mode的判断、对Flag的处理、对生命周期的管理，如果我们过于深究细节，将会在代码中迷失自己">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yunlinos.com/archives/12d6dd90/Activity启动流程图.jpg">
+<meta property="og:updated_time" content="2018-09-25T08:47:50.575Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Activity Hook之启动流程">
+<meta name="twitter:description" content="前言本文是Activity Hook系列文章的上篇。在对Activity启动过程进行实际Hook前，我们应该对启动流程了如指掌，这样才能找到最佳的Hook点。而在这篇文章中，我们将会跟随源码的步伐，一步步看清楚Activity的启动流程。 但是，整个Activity的启动流程异常复杂，包括对Launch mode的判断、对Flag的处理、对生命周期的管理，如果我们过于深究细节，将会在代码中迷失自己">
+<meta name="twitter:image" content="http://yunlinos.com/archives/12d6dd90/Activity启动流程图.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yunlinos.com/archives/12d6dd90.html"/>
+
+
+
+
+
+  <title>Activity Hook之启动流程 | YunLinOS Notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YunLinOS Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yunlinos.com/archives/12d6dd90.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YunLinOS">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/icon.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YunLinOS Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Activity Hook之启动流程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T16:41:53+08:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android插件化和热修复/" itemprop="url" rel="index">
+                    <span itemprop="name">Android插件化和热修复</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文是Activity Hook系列文章的上篇。在对Activity启动过程进行实际Hook前，我们应该对启动流程了如指掌，这样才能找到最佳的Hook点。而在这篇文章中，我们将会跟随源码的步伐，一步步看清楚Activity的启动流程。</p>
+<p>但是，整个Activity的启动流程异常复杂，包括对Launch mode的判断、对Flag的处理、对生命周期的管理，如果我们过于深究细节，将会在代码中迷失自己。故在此篇文章中，我们需要把握整体，仅仅立足于整个流程的主要路径，只对几个关键点进行重点介绍，力求语言简洁，突出重点。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>基于Android 7.1的源码分析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">frameworks/base/services/core/java/com/android/server/am/</span><br><span class="line">  - ActivityManagerService.java</span><br><span class="line">  - ActivityStackSupervisor.java</span><br><span class="line">  - ActivityStack.java</span><br><span class="line">  - ActivityRecord.java</span><br><span class="line">  - ProcessRecord.java</span><br><span class="line"></span><br><span class="line">frameworks/base/core/java/android/app/</span><br><span class="line">  - IActivityManager.java</span><br><span class="line">  - ActivityManagerNative.java (内含AMP)</span><br><span class="line">  - ActivityManager.java</span><br><span class="line">  </span><br><span class="line">  - IApplicationThread.java</span><br><span class="line">  - ApplicationThreadNative.java (内含ATP)</span><br><span class="line">  - ActivityThread.java (内含ApplicationThread)</span><br><span class="line">  </span><br><span class="line">  - ContextImpl.java</span><br></pre></td></tr></table></figure>
+<p>主要服务的简单介绍：</p>
+<ol>
+<li>zygote进程：Android系统开启新进程的方式，是通过fork zygote进程实现的，其他应用所在的进程都是zygote的子进程。</li>
+<li>SystemServer进程：也是zygote进程fork出来的子进程。系统里面所有重要的服务都是在该进程里面开启的，比如ActivityManagerService、PackageManagerService、WindowManagerService等等。</li>
+<li>ActivityManagerService：负责系统中所有Activity的生命周期，其他应用通过binder和该服务通信。</li>
+</ol>
+<h2 id="源码阅读"><a href="#源码阅读" class="headerlink" title="源码阅读"></a>源码阅读</h2><p>在源码阅读前，强烈建议先了解binder机制。作为Android系统提供的一种IPC机制，无论从系统开发还是应用开发，都是Android系统中最重要的组成，也是最难理解的一块知识点，源码中大多数地方都是通过binder机制进行通信。详情可见：<a href="http://gityuan.com/2015/10/31/binder-prepare/" target="_blank" rel="noopener">Binder系列</a></p>
+<ol>
+<li><p>Activity.startActivity<br>[Activity.java]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void startActivity(Intent intent) &#123;</span><br><span class="line">    this.startActivity(intent, null);</span><br><span class="line">&#125;</span><br><span class="line">     </span><br><span class="line">@Override</span><br><span class="line">public void startActivity(Intent intent, @Nullable Bundle options) &#123;</span><br><span class="line">    if (options != null) &#123;</span><br><span class="line">        startActivityForResult(intent, -1, options);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // Note we want to go through this call for compatibility with</span><br><span class="line">        // applications that may have overridden the method.</span><br><span class="line">        startActivityForResult(intent, -1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">     </span><br><span class="line">public void startActivityForResult(@RequiresPermission Intent intent, int requestCode,</span><br><span class="line">        @Nullable Bundle options) &#123;</span><br><span class="line">    if (mParent == null) &#123;</span><br><span class="line">        options = transferSpringboardActivityOptions(options);</span><br><span class="line">        // 通过Instrumentation进行Activity的实际启动</span><br><span class="line">        Instrumentation.ActivityResult ar =</span><br><span class="line">            mInstrumentation.execStartActivity(</span><br><span class="line">                this, mMainThread.getApplicationThread(), mToken, this,</span><br><span class="line">                intent, requestCode, options);</span><br><span class="line">        if (ar != null) &#123;</span><br><span class="line">            mMainThread.sendActivityResult(</span><br><span class="line">                mToken, mEmbeddedID, requestCode, ar.getResultCode(),</span><br><span class="line">                ar.getResultData());</span><br><span class="line">        &#125;</span><br><span class="line">    ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Instrumentation.execStartActivity<br>[Instrumentation.java]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public ActivityResult execStartActivity(</span><br><span class="line">        Context who, IBinder contextThread, IBinder token, Activity target,</span><br><span class="line">        Intent intent, int requestCode, Bundle options) &#123;</span><br><span class="line">    ···</span><br><span class="line">    try &#123;</span><br><span class="line">        intent.migrateExtraStreamToClipData();</span><br><span class="line">        intent.prepareToLeaveProcess(who);</span><br><span class="line">        int result = ActivityManager.getService()</span><br><span class="line">            .startActivity(whoThread, who.getBasePackageName(), intent,</span><br><span class="line">                    intent.resolveTypeIfNeeded(who.getContentResolver()),</span><br><span class="line">                    token, target != null ? target.mEmbeddedID : null,</span><br><span class="line">                    requestCode, 0, null, options);</span><br><span class="line">        // 检查Activity是否启动成功</span><br><span class="line">        checkStartActivityResult(result, intent);</span><br><span class="line">    &#125; catch (RemoteException e) &#123;</span><br><span class="line">        throw new RuntimeException(&quot;Failure from system&quot;, e);</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ActivityManager.getService<br>[ActivityManager.java]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @hide</span><br><span class="line"> */</span><br><span class="line">public static IActivityManager getService() &#123;</span><br><span class="line">    return IActivityManagerSingleton.get();</span><br><span class="line">&#125;</span><br><span class="line">     </span><br><span class="line">private static final Singleton&lt;IActivityManager&gt; IActivityManagerSingleton =</span><br><span class="line">        new Singleton&lt;IActivityManager&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            protected IActivityManager create() &#123;</span><br><span class="line">                // 拿到ActivityManagerService的代理对象，即可通过binder机制远程调用方法</span><br><span class="line">                final IBinder b = ServiceManager.getService(Context.ACTIVITY_SERVICE);</span><br><span class="line">                final IActivityManager am = IActivityManager.Stub.asInterface(b);</span><br><span class="line">                return am;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ActivityManagerService.startActivity<br>[ActivityManagerService.java]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public final int startActivity(IApplicationThread caller, String callingPackage,</span><br><span class="line">        Intent intent, String resolvedType, IBinder resultTo, String resultWho, int requestCode,</span><br><span class="line">        int startFlags, ProfilerInfo profilerInfo, Bundle bOptions) &#123;</span><br><span class="line">    return startActivityAsUser(caller, callingPackage, intent, resolvedType, resultTo,</span><br><span class="line">            resultWho, requestCode, startFlags, profilerInfo, bOptions,</span><br><span class="line">            UserHandle.getCallingUserId());</span><br><span class="line">&#125;</span><br><span class="line">     </span><br><span class="line">@Override</span><br><span class="line">public final int startActivityAsUser(IApplicationThread caller, String callingPackage,</span><br><span class="line">        Intent intent, String resolvedType, IBinder resultTo, String resultWho, int requestCode,</span><br><span class="line">        int startFlags, ProfilerInfo profilerInfo, Bundle bOptions, int userId) &#123;</span><br><span class="line">    enforceNotIsolatedCaller(&quot;startActivity&quot;);</span><br><span class="line">    userId = mUserController.handleIncomingUser(Binder.getCallingPid(), Binder.getCallingUid(),</span><br><span class="line">            userId, false, ALLOW_FULL_ONLY, &quot;startActivity&quot;, null);</span><br><span class="line">    // TODO: Switch to user app stacks here.</span><br><span class="line">    return mActivityStarter.startActivityMayWait(caller, -1, callingPackage, intent,</span><br><span class="line">            resolvedType, null, null, resultTo, resultWho, requestCode, startFlags,</span><br><span class="line">            profilerInfo, null, null, bOptions, false, userId, null, null,</span><br><span class="line">            &quot;startActivityAsUser&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这时候，逻辑就已经进入到AMS中了。这里面的逻辑异常复杂，将会处理各种场景，包括launch mode、flag、生命周期等等，在这里就不进行详解了，如果大家对这块感兴趣的话可自行阅读源码。原因有两个：</p>
+<ul>
+<li>我们更多的是关注整个流程和路径，而不深究细节</li>
+<li>我们在Hook Activity启动流程时，是没法对AMS这部分进行hook的，故这部分代码暂不细读</li>
+</ul>
+<p>我们直接来到Activity启动的最后一站，在<code>ActivityStackSupervisor</code>中。</p>
+</li>
+<li><p>ActivityStackSupervisor.realStartActivityLocked<br>[ActivityStackSupervisor.java]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">final boolean realStartActivityLocked(ActivityRecord r, ProcessRecord app,</span><br><span class="line">        boolean andResume, boolean checkConfig) throws RemoteException &#123;</span><br><span class="line">    ···</span><br><span class="line">        // 拿到Applicationthread的代理对象，即可通过binder机制远程调用方法</span><br><span class="line">        app.thread.scheduleLaunchActivity(new Intent(r.intent), r.appToken,</span><br><span class="line">                System.identityHashCode(r), r.info,</span><br><span class="line">                // TODO: Have this take the merged configuration instead of separate global and</span><br><span class="line">                // override configs.</span><br><span class="line">                mergedConfiguration.getGlobalConfiguration(),</span><br><span class="line">                mergedConfiguration.getOverrideConfiguration(), r.compat,</span><br><span class="line">                r.launchedFromPackage, task.voiceInteractor, app.repProcState, r.icicle,</span><br><span class="line">                r.persistentState, results, newIntents, !andResume,</span><br><span class="line">                mService.isNextTransitionForward(), profilerInfo);</span><br><span class="line">    ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ApplicationThread.scheduleLaunchActivity<br>[ActivityThread.java]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">private class ApplicationThread extends IApplicationThread.Stub &#123;</span><br><span class="line">    private static final String DB_INFO_FORMAT = &quot;  %8s %8s %14s %14s  %s&quot;;</span><br><span class="line">     </span><br><span class="line">    private int mLastProcessState = -1;</span><br><span class="line">    </span><br><span class="line">    ···</span><br><span class="line">    @Override</span><br><span class="line">    public final void scheduleRelaunchActivity(IBinder token,</span><br><span class="line">            List&lt;ResultInfo&gt; pendingResults, List&lt;ReferrerIntent&gt; pendingNewIntents,</span><br><span class="line">            int configChanges, boolean notResumed, Configuration config,</span><br><span class="line">            Configuration overrideConfig, boolean preserveWindow) &#123;</span><br><span class="line">        // binder远程调用方法。在ActivityStackSupervisor中调用，实际执行是在ApplicationThread中</span><br><span class="line">        requestRelaunchActivity(token, pendingResults, pendingNewIntents,</span><br><span class="line">                configChanges, notResumed, config, overrideConfig, true, preserveWindow);</span><br><span class="line">    &#125;</span><br><span class="line">    ···</span><br><span class="line">&#125;</span><br><span class="line">     </span><br><span class="line">public final void requestRelaunchActivity(IBinder token,</span><br><span class="line">        List&lt;ResultInfo&gt; pendingResults, List&lt;ReferrerIntent&gt; pendingNewIntents,</span><br><span class="line">        int configChanges, boolean notResumed, Configuration config,</span><br><span class="line">        Configuration overrideConfig, boolean fromServer, boolean preserveWindow) &#123;</span><br><span class="line">    ActivityClientRecord target = null;</span><br><span class="line">     </span><br><span class="line">    synchronized (mResourcesManager) &#123;</span><br><span class="line">        ···</span><br><span class="line">        if (target == null) &#123;</span><br><span class="line">            if (DEBUG_ORDER) Slog.d(TAG, &quot;requestRelaunchActivity: target is null, fromServer:&quot;</span><br><span class="line">                    + fromServer);</span><br><span class="line">            target = new ActivityClientRecord();</span><br><span class="line">            target.token = token;</span><br><span class="line">            target.pendingResults = pendingResults;</span><br><span class="line">            target.pendingIntents = pendingNewIntents;</span><br><span class="line">            target.mPreserveWindow = preserveWindow;</span><br><span class="line">            if (!fromServer) &#123;</span><br><span class="line">                final ActivityClientRecord existing = mActivities.get(token);</span><br><span class="line">                if (DEBUG_ORDER) Slog.d(TAG, &quot;requestRelaunchActivity: &quot; + existing);</span><br><span class="line">                if (existing != null) &#123;</span><br><span class="line">                    if (DEBUG_ORDER) Slog.d(TAG, &quot;requestRelaunchActivity: paused= &quot;</span><br><span class="line">                            + existing.paused);;</span><br><span class="line">                    target.startsNotResumed = existing.paused;</span><br><span class="line">                    target.overrideConfig = existing.overrideConfig;</span><br><span class="line">                &#125;</span><br><span class="line">                target.onlyLocalRequest = true;</span><br><span class="line">            &#125;</span><br><span class="line">            mRelaunchingActivities.add(target);</span><br><span class="line">            // 通过sendMessage来执行方法</span><br><span class="line">            sendMessage(H.RELAUNCH_ACTIVITY, target);</span><br><span class="line">        &#125;</span><br><span class="line">    ···</span><br><span class="line">    &#125;</span><br><span class="line">    if (DEBUG_ORDER) Slog.d(TAG, &quot;relaunchActivity &quot; + ActivityThread.this + &quot;, target &quot;</span><br><span class="line">            + target + &quot; operation received seq: &quot; + target.relaunchSeq);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>H.handleMessage<br>[ActivityThread.java]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public void handleMessage(Message msg) &#123;</span><br><span class="line">    switch (msg.what) &#123;</span><br><span class="line">        case LAUNCH_ACTIVITY: &#123;</span><br><span class="line">            Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, &quot;activityStart&quot;);</span><br><span class="line">            final ActivityClientRecord r = (ActivityClientRecord) msg.obj;</span><br><span class="line">            r.packageInfo = getPackageInfoNoCheck(</span><br><span class="line">            r.activityInfo.applicationInfo, r.compatInfo);</span><br><span class="line">            //【见流程8】</span><br><span class="line">            handleLaunchActivity(r, null, &quot;LAUNCH_ACTIVITY&quot;);</span><br><span class="line">            Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line">        &#125; break;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ActivityThread.handleLaunchActivity<br>[ActivityThread.java]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">private void handleLaunchActivity(ActivityClientRecord r, Intent customIntent, String reason) &#123;</span><br><span class="line">    // If we are getting ready to gc after going to the background, well</span><br><span class="line">    // we are back active so skip it.</span><br><span class="line">    unscheduleGcIdler();</span><br><span class="line">    mSomeActivitiesChanged = true;</span><br><span class="line">     </span><br><span class="line">    if (r.profilerInfo != null) &#123;</span><br><span class="line">        mProfiler.setProfiler(r.profilerInfo);</span><br><span class="line">        mProfiler.startProfiling();</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    // Make sure we are running with the most recent config.</span><br><span class="line">    handleConfigurationChanged(null, null);</span><br><span class="line">     </span><br><span class="line">    if (localLOGV) Slog.v(</span><br><span class="line">        TAG, &quot;Handling launch of &quot; + r);</span><br><span class="line">     </span><br><span class="line">    // Initialize before creating the activity</span><br><span class="line">    WindowManagerGlobal.initialize();</span><br><span class="line">     </span><br><span class="line">    Activity a = performLaunchActivity(r, customIntent);</span><br><span class="line">     </span><br><span class="line">    if (a != null) &#123;</span><br><span class="line">        r.createdConfig = new Configuration(mConfiguration);</span><br><span class="line">        reportSizeConfigurations(r);</span><br><span class="line">        Bundle oldState = r.state;</span><br><span class="line">        handleResumeActivity(r.token, false, r.isForward,</span><br><span class="line">                !r.activity.mFinished &amp;&amp; !r.startsNotResumed, r.lastProcessedSeq, reason);</span><br><span class="line">     </span><br><span class="line">        if (!r.activity.mFinished &amp;&amp; r.startsNotResumed) &#123;</span><br><span class="line">            // The activity manager actually wants this one to start out paused, because it</span><br><span class="line">            // needs to be visible but isn&apos;t in the foreground. We accomplish this by going</span><br><span class="line">            // through the normal startup (because activities expect to go through onResume()</span><br><span class="line">            // the first time they run, before their window is displayed), and then pausing it.</span><br><span class="line">            // However, in this case we do -not- need to do the full pause cycle (of freezing</span><br><span class="line">            // and such) because the activity manager assumes it can just retain the current</span><br><span class="line">            // state it has.</span><br><span class="line">            performPauseActivityIfNeeded(r, reason);</span><br><span class="line">     </span><br><span class="line">            // We need to keep around the original state, in case we need to be created again.</span><br><span class="line">            // But we only do this for pre-Honeycomb apps, which always save their state when</span><br><span class="line">            // pausing, so we can not have them save their state when restarting from a paused</span><br><span class="line">            // state. For HC and later, we want to (and can) let the state be saved as the</span><br><span class="line">            // normal part of stopping the activity.</span><br><span class="line">            if (r.isPreHoneycomb()) &#123;</span><br><span class="line">                r.state = oldState;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // 如果出现任何错误，通过binder通知ActivityManagerService停止启动</span><br><span class="line">        try &#123;</span><br><span class="line">            ActivityManager.getService()</span><br><span class="line">                .finishActivity(r.token, Activity.RESULT_CANCELED, null,</span><br><span class="line">                        Activity.DONT_FINISH_TASK_WITH_ACTIVITY);</span><br><span class="line">        &#125; catch (RemoteException ex) &#123;</span><br><span class="line">            throw ex.rethrowFromSystemServer();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接下来，就是Activity正常的onCreate、onStart、onResume生命周期。</p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过源码阅读，我们大概知道了应用的整个启动流程，即：</p>
+<ol>
+<li>A进程通过binder机制向system_server进程发起startActivity请求</li>
+<li>system_server进程收到请求后，通过socket机制向zygote进程发起创建进程的请求</li>
+<li>zygote进程fork出新的子线程，即B进程</li>
+<li>B进程通过binder机制向sytem_server进程发起attachApplication请求</li>
+<li>system_server进程在收到请求后，进行相应处理，再通过binder机制向B进程发送scheduleLaunchActivity请求</li>
+<li>B进程收到请求后，通过handler向主线程发送<code>LAUNCH_ACTIVITY</code>消息</li>
+<li>主线程收到消息后，创建相关的Activity并执行其生命周期</li>
+</ol>
+<p>借用Gityuan中的流程图为：<br><img src="/archives/12d6dd90/Activity启动流程图.jpg" alt="Activity启动流程图"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://gityuan.com/2016/03/12/start-activity/" target="_blank" rel="noopener">startActivity启动过程分析</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    YunLinOS
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yunlinos.com/archives/12d6dd90.html" title="Activity Hook之启动流程">http://yunlinos.com/archives/12d6dd90.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Activity/" rel="tag"># Activity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/archives/875ee7f0.html" rel="next" title="Java 动态代理机制">
+                <i class="fa fa-chevron-left"></i> Java 动态代理机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/icon.png"
+                alt="YunLinOS" />
+            
+              <p class="site-author-name" itemprop="name">YunLinOS</p>
+              <p class="site-description motion-element" itemprop="description">生如逆旅，一苇以航</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yunlinos" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码阅读"><span class="nav-number">3.</span> <span class="nav-text">源码阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YunLinOS</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io"  rel="external nofollow">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next"  rel="external nofollow">NexT.Mist</a> v5.1.4</div>
+
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数 <span id="busuanzi_value_site_uv"></span>
+  </span>
+  </div>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
