@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://yunlinos.com/archives/41260128.html</loc>
+    <lastmod>2018-10-13T03:06:07.806Z</lastmod>
+    <data>
+        <display>
+        <title>Why use ContextImpl to implement Context rather than ContextWrapper in Android?</title>
+        <pubTime>2018-10-13T03:02:20.000Z</pubTime>
+        
+        <tag>Activity</tag>
+         
+        <tag>Context</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android源码解析" url="http://yunlinos.com/categories/Android%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yunlinos.com/archives/59726f95.html</loc>
     <lastmod>2018-10-12T00:51:44.258Z</lastmod>
     <data>
@@ -25,7 +47,7 @@
     
   <url>
     <loc>http://yunlinos.com/archives/12d6dd90.html</loc>
-    <lastmod>2018-09-25T08:47:50.575Z</lastmod>
+    <lastmod>2018-10-12T00:51:42.879Z</lastmod>
     <data>
         <display>
         <title>Activity Hook之启动流程</title>
