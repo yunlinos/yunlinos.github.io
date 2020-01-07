@@ -354,7 +354,7 @@
       
 
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在使用monkey进行压力测试时，我们发现，随机的触摸事件中大约有95%的无效事件，达到深层页面的概率极低，每晚压测的实际有效时间其实只有半小时，且缺少相互依赖的路径，完全无法满足压力测试的需求。而存粹依靠人工测试则效率过低，所以我们会想，能否有一种方式，可以将我们的测试过程录制下来，然后在更多的机器上面循环回放，还能对操作进行加速和减速，并且实时跟踪崩溃数据和性能数据，起到效率更高的压测效果，即<code>Copy once, paste anywhere</code>。在知道<a href="http://yunlinos.com/archives/9f4ea589.html" title="触摸事件原理">触摸事件原理</a>后，我们就开始做这件很Cool的事情，而本文就介绍了整个预研和摸索的过程。</p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在使用monkey进行压力测试时，我们发现，随机的触摸事件中大约有95%的无效事件，达到深层页面的概率极低，每晚压测的实际有效时间其实只有半小时，且缺少相互依赖的路径，完全无法满足压力测试的需求。而存粹依靠人工测试则效率过低，所以我们会想，能否有一种方式，可以将我们的测试过程录制下来，然后在更多的机器上面循环回放，还能对操作进行加速和减速，并且实时跟踪崩溃数据和性能数据，起到效率更高的压测效果，即<code>Copy once, paste anywhere</code>。在知道<a href="http://yunlinos.com/archives/9f4ea589.html" title="触摸事件原理" target="_blank" rel="noopener">触摸事件原理</a>后，我们就开始做这件很Cool的事情，而本文就介绍了整个预研和摸索的过程。</p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们现在先梳理下我们需要实现的功能，即过程大概如下：</p>
 <ol>
 <li>将触摸事件记录在文本中</li>
@@ -362,7 +362,7 @@
 <li>读取文本信息，解析成触摸事件和时间间隔</li>
 <li>将触摸事件注入到系统中，并根据时间间隔进行延时注入</li>
 </ol>
-<p>说到触摸事件注入，那么我们是否有想到之前的这篇文章：<a href="http://yunlinos.com/archives/9f4ea589.html" title="Android触摸事件原理">Android触摸事件原理</a>。在那里介绍了Monkey中常用的两种事件注入方式，即：</p>
+<p>说到触摸事件注入，那么我们是否有想到之前的这篇文章：<a href="http://yunlinos.com/archives/9f4ea589.html" title="Android触摸事件原理" target="_blank" rel="noopener">Android触摸事件原理</a>。在那里介绍了Monkey中常用的两种事件注入方式，即：</p>
 <ol>
 <li><code>InputManager.getInstance().injectInputEvent</code></li>
 <li><code>FileOutputStream(&quot;/dev/input/event0&quot;)</code></li>
@@ -554,7 +554,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -636,7 +636,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

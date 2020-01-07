@@ -357,7 +357,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上篇文章<a href="http://yunlinos.com/archives/ff7c0d4a.html" title="Android Monkey源码解析">Android Monkey源码解析</a>中，我们学习了Monkey的基本用法，也知道了完整的执行流程。在大多数情况下，我们只需要一行代码即可完成最终的系统事件注入。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!InputManager.getInstance().injectInputEvent(keyEvent,</span><br><span class="line">        InputManager.INJECT_INPUT_EVENT_MODE_WAIT_FOR_RESULT)) &#123;</span><br><span class="line">    <span class="keyword">return</span> MonkeyEvent.INJECT_FAIL;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> MonkeyEvent.INJECT_SUCCESS;</span><br></pre></td></tr></table></figure></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上篇文章<a href="http://yunlinos.com/archives/ff7c0d4a.html" title="Android Monkey源码解析" target="_blank" rel="noopener">Android Monkey源码解析</a>中，我们学习了Monkey的基本用法，也知道了完整的执行流程。在大多数情况下，我们只需要一行代码即可完成最终的系统事件注入。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!InputManager.getInstance().injectInputEvent(keyEvent,</span><br><span class="line">        InputManager.INJECT_INPUT_EVENT_MODE_WAIT_FOR_RESULT)) &#123;</span><br><span class="line">    <span class="keyword">return</span> MonkeyEvent.INJECT_FAIL;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> MonkeyEvent.INJECT_SUCCESS;</span><br></pre></td></tr></table></figure></p>
 <p>当然，如果你阅读源码较为细心，也会发现<code>MonkeyFlipEvent</code>是用了另外一种方式进行事件注入，即：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">injectEvent</span><span class="params">(IWindowManager iwm, IActivityManager iam, <span class="keyword">int</span> verbose)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (verbose &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        System.out.println(<span class="string">":Sending Flip keyboardOpen="</span> + mKeyboardOpen);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// inject flip event</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        FileOutputStream f = <span class="keyword">new</span> FileOutputStream(<span class="string">"/dev/input/event0"</span>);</span><br><span class="line">        f.write(mKeyboardOpen ? FLIP_0 : FLIP_1);</span><br><span class="line">        f.close();</span><br><span class="line">        <span class="keyword">return</span> MonkeyEvent.INJECT_SUCCESS;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Got IOException performing flip"</span> + e);</span><br><span class="line">        <span class="keyword">return</span> MonkeyEvent.INJECT_FAIL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>那么，这两种方式又是如何将事件注入到系统中呢？再延伸下，Android系统中，触摸事件的来源是什么？又是如何传递到View上？在View中又是如何进行事件分发呢？</p>
 <p>在下面的内容里，我们将从源码中一一找到答案。</p>
@@ -557,7 +557,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -639,7 +639,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

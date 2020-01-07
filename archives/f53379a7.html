@@ -484,7 +484,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation <span class="string">'com.google.auto.service:auto-service:1.0-rc4'</span></span><br></pre></td></tr></table></figure>
 <p>完整注解如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@AutoService</span>(Processor.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnnotationProcessor</span> <span class="keyword">extends</span> <span class="title">AbstractProcessor</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="实现注解处理器"><a href="#实现注解处理器" class="headerlink" title="实现注解处理器"></a>实现注解处理器</h2><p>在上一篇文章<a href="http://yunlinos.com/archives/46aebf49.html">Android IPC库EventFlyer</a>中，我们使用了运行时注解（通过反射机制）来获取到订阅者的相关信息。现在，我们尝试使用编译时注解来获取相关索引，一步步来实现类似于<code>EventBus3.0</code>中的索引机制。</p>
+<h2 id="实现注解处理器"><a href="#实现注解处理器" class="headerlink" title="实现注解处理器"></a>实现注解处理器</h2><p>在上一篇文章<a href="http://yunlinos.com/archives/46aebf49.html" target="_blank" rel="noopener">Android IPC库EventFlyer</a>中，我们使用了运行时注解（通过反射机制）来获取到订阅者的相关信息。现在，我们尝试使用编译时注解来获取相关索引，一步步来实现类似于<code>EventBus3.0</code>中的索引机制。</p>
 <p><strong>完整源码地址：</strong><a href="https://github.com/yunlinos/ApplicationAnnotation" target="_blank" rel="noopener">Github</a></p>
 <ol>
 <li><p>定义相关的注解，即编译时注解<code>RetentionPolicy.CLASS</code>，注解修饰方法<code>ElementType.METHOD</code>：</p>
@@ -689,7 +689,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -771,7 +771,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

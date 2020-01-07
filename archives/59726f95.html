@@ -354,7 +354,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了找到最佳的Hook点，我们通过源码了解了<a href="http://yunlinos.com/archives/12d6dd90.html">Activity的启动流程</a>。而在这篇文章中，我们最终的目的是为了能够启动一个未在AndroidManifest中注册的Activity。该篇文章很大程度上参考了包建强的书籍《Android插件化开发指南》。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了找到最佳的Hook点，我们通过源码了解了<a href="http://yunlinos.com/archives/12d6dd90.html" target="_blank" rel="noopener">Activity的启动流程</a>。而在这篇文章中，我们最终的目的是为了能够启动一个未在AndroidManifest中注册的Activity。该篇文章很大程度上参考了包建强的书籍《Android插件化开发指南》。</p>
 <p>可能大家会有疑问，突破Manifest的限制有啥意义？在常规的插件化工作中，如果我们需要启动一个插件的Activity，而该Activity肯定是未知的，也就无法正常在Manifest文件中声明；如果插件新添加一个Activity，主程序的AndroidManifest.xml就需要更新；既然双方都需要修改升级，何必要使用插件呢？</p>
 <p>所以，该篇文章旨在突破这个限制，能够随意启动新增加的插件Activity。本文将会有两个主要部分：</p>
 <ol>
@@ -558,7 +558,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -640,7 +640,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
